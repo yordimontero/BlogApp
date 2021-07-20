@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1015060002192",
+    "project_id": "blogapp-bb37c",
+    "storage_bucket": "blogapp-bb37c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1015060002192:android:da0bb7d8508b2c85eeaf15",
+        "android_client_info": {
+          "package_name": "com.circleappsstudio.blogapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1015060002192-vak83r2n2o0mpago842ndkfvkabsd59n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAqQaj5XM9QLFxmvOrw8PPGzO87p5u2wqw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1015060002192-vak83r2n2o0mpago842ndkfvkabsd59n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
