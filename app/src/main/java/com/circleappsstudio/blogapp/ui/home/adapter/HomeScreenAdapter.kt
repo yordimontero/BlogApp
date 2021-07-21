@@ -33,6 +33,9 @@ class HomeScreenAdapter(
 
         when(holder) {
             is HomeScreenViewHolder -> {
+                /**
+                    Each position for the list of posts will be binded with data.
+                 */
                 holder.bind(listPost[position])
             }
         }
@@ -54,6 +57,10 @@ class HomeScreenAdapter(
     ): BaseViewHolder<Post>(binding.root) {
 
         override fun bind(item: Post) {
+            /**
+                bind() function gets the position gave for onBindViewHolder
+                and sets the data.
+             */
             Glide.with(context).load(item.profile_picture).centerCrop().into(binding.profilePicture)
             binding.profileName.text = item.profile_name
             binding.postTimestamp.text = "Testing"
