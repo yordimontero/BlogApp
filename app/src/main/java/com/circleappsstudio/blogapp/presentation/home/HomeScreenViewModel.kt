@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import com.circleappsstudio.blogapp.core.Resource
-import com.circleappsstudio.blogapp.domain.HomeScreenRepository
+import com.circleappsstudio.blogapp.domain.home.HomeScreenRepository
 import kotlinx.coroutines.Dispatchers
 import java.lang.Exception
 
@@ -32,6 +32,6 @@ class HomeScreenViewModelFactory(
 ): ViewModelProvider.Factory {
 
     override fun <T : ViewModel?> create(modelClass: Class<T>)
-    : T = modelClass.getConstructor(HomeScreenRepository::class.java).newInstance(repository)
+    : T = HomeScreenViewModel(repository) as T
 
 }

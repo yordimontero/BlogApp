@@ -1,4 +1,4 @@
-package com.circleappsstudio.blogapp.data.remote
+package com.circleappsstudio.blogapp.data.remote.home
 
 import com.circleappsstudio.blogapp.core.Resource
 import com.circleappsstudio.blogapp.data.model.Post

@@ -1,7 +1,6 @@
 package com.circleappsstudio.blogapp.ui.home
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.Toast
@@ -9,14 +8,12 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.circleappsstudio.blogapp.R
 import com.circleappsstudio.blogapp.core.Resource
-import com.circleappsstudio.blogapp.data.model.Post
-import com.circleappsstudio.blogapp.data.remote.HomeScreenDataSource
+import com.circleappsstudio.blogapp.data.remote.home.HomeScreenDataSource
 import com.circleappsstudio.blogapp.databinding.FragmentHomeScreenBinding
-import com.circleappsstudio.blogapp.domain.HomeScreenRepositoryImpl
+import com.circleappsstudio.blogapp.domain.home.HomeScreenRepositoryImpl
 import com.circleappsstudio.blogapp.presentation.HomeScreenViewModel
 import com.circleappsstudio.blogapp.presentation.HomeScreenViewModelFactory
 import com.circleappsstudio.blogapp.ui.home.adapter.HomeScreenAdapter
-import com.google.firebase.Timestamp
 
 class HomeScreenFragment : Fragment(R.layout.fragment_home_screen) {
 
