@@ -42,6 +42,8 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
         doLogIn()
 
+        goToSignUp()
+
     }
 
     private fun isUserLoggedIn() {
@@ -125,6 +127,12 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
     private fun goToHomeScreen() {
         findNavController().navigate(R.id.action_loginFragment_to_homeScreenFragment)
+    }
+
+    private fun goToSignUp() {
+        binding.txtSignUp.setOnClickListener {
+            findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
+        }
     }
 
 }
