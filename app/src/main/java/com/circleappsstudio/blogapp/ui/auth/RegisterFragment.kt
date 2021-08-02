@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.circleappsstudio.blogapp.R
 import com.circleappsstudio.blogapp.core.Result
+import com.circleappsstudio.blogapp.core.toast
 import com.circleappsstudio.blogapp.data.remote.auth.AuthDataSource
 import com.circleappsstudio.blogapp.databinding.FragmentRegisterBinding
 import com.circleappsstudio.blogapp.domain.auth.AuthRepositoryImpl
@@ -75,7 +76,13 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                     }
 
                     is Result.Failure -> {
-                        Toast.makeText(requireContext(), "Something went wrong: ${resultEmitted.exception}", Toast.LENGTH_SHORT).show()
+
+                        requireContext().toast(
+                            requireContext(),
+                            "Something went wrong: ${resultEmitted.exception}",
+                            Toast.LENGTH_SHORT
+                        )
+
                         binding.progressBar.visibility = View.GONE
                     }
 

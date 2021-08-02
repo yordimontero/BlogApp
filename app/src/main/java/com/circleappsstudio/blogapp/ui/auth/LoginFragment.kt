@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.circleappsstudio.blogapp.R
 import com.circleappsstudio.blogapp.core.Result
+import com.circleappsstudio.blogapp.core.toast
 import com.circleappsstudio.blogapp.data.remote.auth.AuthDataSource
 import com.circleappsstudio.blogapp.databinding.FragmentLoginBinding
 import com.circleappsstudio.blogapp.domain.auth.AuthRepositoryImpl
@@ -109,11 +110,11 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
                     is Result.Failure -> {
 
-                        Toast.makeText(
+                        requireContext().toast(
                             requireContext(),
-                            "Sign In error: ${resultEmitted.exception.message}",
+                            "Something went wrong: ${resultEmitted.exception.message}",
                             Toast.LENGTH_LONG
-                        ).show()
+                        )
 
                         binding.progressBar.visibility = View.GONE
 

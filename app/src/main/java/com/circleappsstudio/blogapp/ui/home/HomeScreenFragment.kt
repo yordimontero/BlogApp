@@ -8,6 +8,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.circleappsstudio.blogapp.R
 import com.circleappsstudio.blogapp.core.Result
+import com.circleappsstudio.blogapp.core.toast
 import com.circleappsstudio.blogapp.data.remote.home.HomeScreenDataSource
 import com.circleappsstudio.blogapp.databinding.FragmentHomeScreenBinding
 import com.circleappsstudio.blogapp.domain.home.HomeScreenRepositoryImpl
@@ -55,11 +56,13 @@ class HomeScreenFragment : Fragment(R.layout.fragment_home_screen) {
                         }
 
                         is Result.Failure -> {
-                            Toast.makeText(
+
+                            requireContext().toast(
                                 requireContext(),
                                 "Something went wrong: ${resultEmitted.exception.message}",
                                 Toast.LENGTH_LONG
-                            ).show()
+                            )
+
                             binding.progressBar.visibility = View.GONE
                         }
 
