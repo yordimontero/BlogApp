@@ -9,12 +9,12 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.circleappsstudio.blogapp.R
-import com.circleappsstudio.blogapp.core.Resource
-import com.circleappsstudio.blogapp.data.remote.auth.LoginDataSource
+import com.circleappsstudio.blogapp.core.Result
+import com.circleappsstudio.blogapp.data.remote.auth.AuthDataSource
 import com.circleappsstudio.blogapp.databinding.FragmentLoginBinding
-import com.circleappsstudio.blogapp.domain.auth.LoginRepositoryImpl
-import com.circleappsstudio.blogapp.presentation.auth.LoginScreenViewModel
-import com.circleappsstudio.blogapp.presentation.auth.LoginScreenViewModelFactory
+import com.circleappsstudio.blogapp.domain.auth.AuthRepositoryImpl
+import com.circleappsstudio.blogapp.presentation.auth.AuthViewModel
+import com.circleappsstudio.blogapp.presentation.auth.AuthViewModelFactory
 import com.google.firebase.auth.FirebaseAuth
 
 class LoginFragment : Fragment(R.layout.fragment_login) {
@@ -25,10 +25,10 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         FirebaseAuth.getInstance()
     }
 
-    private val viewModel by viewModels<LoginScreenViewModel> {
-        LoginScreenViewModelFactory(
-            LoginRepositoryImpl(
-                LoginDataSource()
+    private val viewModel by viewModels<AuthViewModel> {
+        AuthViewModelFactory(
+            AuthRepositoryImpl(
+                AuthDataSource()
             )
         )
     }
@@ -98,16 +98,16 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
                 when(resultEmitted) {
 
-                    is Resource.Loading -> {
+                    is Result.Loading -> {
                         binding.progressBar.visibility = View.VISIBLE
                     }
 
-                    is Resource.Success -> {
+                    is Result.Success -> {
                         goToHomeScreen()
                         binding.progressBar.visibility = View.GONE
                     }
 
-                    is Resource.Failure -> {
+                    is Result.Failure -> {
 
                         Toast.makeText(
                             requireContext(),

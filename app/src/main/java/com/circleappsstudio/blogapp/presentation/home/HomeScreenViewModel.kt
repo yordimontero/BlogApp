@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
-import com.circleappsstudio.blogapp.core.Resource
+import com.circleappsstudio.blogapp.core.Result
 import com.circleappsstudio.blogapp.domain.home.HomeScreenRepository
 import kotlinx.coroutines.Dispatchers
 import java.lang.Exception
@@ -15,12 +15,12 @@ class HomeScreenViewModel(
 
     fun fetchLatestPosts() = liveData(viewModelScope.coroutineContext + Dispatchers.Main) {
 
-        emit(Resource.Loading())
+        emit(Result.Loading())
 
         try {
             emit(repository.getLatestPosts())
         } catch (e: Exception) {
-            emit(Resource.Failure(e))
+            emit(Result.Failure(e))
         }
 
     }

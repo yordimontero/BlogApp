@@ -1,13 +1,13 @@
 package com.circleappsstudio.blogapp.data.remote.home
 
-import com.circleappsstudio.blogapp.core.Resource
+import com.circleappsstudio.blogapp.core.Result
 import com.circleappsstudio.blogapp.data.model.Post
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 
 class HomeScreenDataSource {
 
-    suspend fun getLatestPosts(): Resource<List<Post>> {
+    suspend fun getLatestPosts(): Result<List<Post>> {
 
         val postList = mutableListOf<Post>()
 
@@ -23,7 +23,7 @@ class HomeScreenDataSource {
             }
         }
 
-        return Resource.Success(postList)
+        return Result.Success(postList)
     }
 
 }
