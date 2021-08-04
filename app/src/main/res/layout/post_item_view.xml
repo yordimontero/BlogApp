@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingHorizontal="8dp"
+    android:paddingVertical="8dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center"
-        android:layout_margin="8dp">
+        android:layout_marginBottom="8dp">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/profile_picture"
@@ -39,6 +42,15 @@
         android:id="@+id/post_image"
         android:layout_width="match_parent"
         android:layout_height="250dp"
-        tools:background="@mipmap/ic_launcher"/>
+        tools:background="@mipmap/ic_launcher"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:id="@+id/post_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxLines="4"
+        android:ellipsize="end"
+        tools:text="This is a photo description."/>
 
 </LinearLayout>

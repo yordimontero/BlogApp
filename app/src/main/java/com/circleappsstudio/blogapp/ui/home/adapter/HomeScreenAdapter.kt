@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.circleappsstudio.blogapp.core.BaseViewHolder
+import com.circleappsstudio.blogapp.core.hide
 import com.circleappsstudio.blogapp.data.model.Post
 import com.circleappsstudio.blogapp.databinding.PostItemViewBinding
 
@@ -63,6 +64,13 @@ class HomeScreenAdapter(
              */
             Glide.with(context).load(item.profile_picture).centerCrop().into(binding.profilePicture)
             binding.profileName.text = item.profile_name
+
+            if (item.post_description.isEmpty()) {
+                binding.postDescription.hide()
+            } else {
+                binding.postDescription.text = item.post_description
+            }
+
             binding.postTimestamp.text = "Testing"
             Glide.with(context).load(item.post_image).centerCrop().into(binding.postImage)
         }
