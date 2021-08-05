@@ -11,7 +11,7 @@ class HomeScreenRepositoryImpl(
 ) : HomeScreenRepository {
 
     override suspend fun getLatestPosts()
-    : Result<List<Post>> = withContext(Dispatchers.IO) {
+    : List<Post> = withContext(Dispatchers.IO) {
         dataSource.getLatestPosts()
     }
 

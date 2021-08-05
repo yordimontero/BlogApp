@@ -4,5 +4,5 @@ import com.circleappsstudio.blogapp.core.Result
 import com.circleappsstudio.blogapp.data.model.Post
 
 interface HomeScreenRepository {
-    suspend fun getLatestPosts(): Result<List<Post>>
+    suspend fun getLatestPosts(): List<Post>
 }

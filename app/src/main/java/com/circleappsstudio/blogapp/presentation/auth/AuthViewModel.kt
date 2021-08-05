@@ -1,5 +1,6 @@
 package com.circleappsstudio.blogapp.presentation.auth
 
+import android.graphics.Bitmap
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.liveData
@@ -42,6 +43,26 @@ class AuthViewModel(private val repository: AuthRepository) : ViewModel() {
             emit(
                 Result.Success(
                     repository.signUp(email, password, userName)
+                )
+            )
+
+        } catch (e: Exception) {
+            emit(Result.Failure(e))
+        }
+
+    }
+
+    fun updateUserProfile(imageBitmap: Bitmap, userName: String) = liveData(
+        viewModelScope.coroutineContext + Dispatchers.Main
+    ) {
+
+        emit(Result.Loading())
+
+        try {
+
+            emit(
+                Result.Success(
+                    repository.updateUserProfile(imageBitmap, userName)
                 )
             )
 

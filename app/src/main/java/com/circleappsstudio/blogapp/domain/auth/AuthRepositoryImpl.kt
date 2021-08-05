@@ -1,5 +1,6 @@
 package com.circleappsstudio.blogapp.domain.auth
 
+import android.graphics.Bitmap
 import com.circleappsstudio.blogapp.data.remote.auth.AuthDataSource
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.Dispatchers
@@ -21,4 +22,12 @@ class AuthRepositoryImpl(private val dataSource: AuthDataSource) : AuthRepositor
     ): FirebaseUser? = withContext(Dispatchers.IO) {
         dataSource.signUp(email, password, userName)
     }
+
+    override suspend fun updateUserProfile(
+        imageBitmap: Bitmap,
+        userName: String
+    ) = withContext(Dispatchers.IO) {
+        dataSource.updateUserProfile(imageBitmap, userName)
+    }
+
 }

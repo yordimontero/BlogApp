@@ -1,5 +1,6 @@
 package com.circleappsstudio.blogapp.data.remote.auth
 
+import android.graphics.Bitmap
 import com.circleappsstudio.blogapp.data.model.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -40,6 +41,10 @@ class AuthDataSource {
         }
 
         return authResult.user
+
+    }
+
+    suspend fun updateUserProfile(imageBitmap: Bitmap, userName: String) {
 
     }
 

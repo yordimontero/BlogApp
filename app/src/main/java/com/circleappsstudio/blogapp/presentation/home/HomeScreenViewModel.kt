@@ -13,12 +13,14 @@ class HomeScreenViewModel(
     private val repository: HomeScreenRepository
 ) : ViewModel() {
 
-    fun fetchLatestPosts() = liveData(viewModelScope.coroutineContext + Dispatchers.Main) {
+    fun fetchLatestPosts() = liveData(
+        viewModelScope.coroutineContext + Dispatchers.Main
+    ) {
 
         emit(Result.Loading())
 
         try {
-            emit(repository.getLatestPosts())
+            emit(Result.Success(repository.getLatestPosts()))
         } catch (e: Exception) {
             emit(Result.Failure(e))
         }
