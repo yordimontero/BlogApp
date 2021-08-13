@@ -22,6 +22,7 @@ import com.circleappsstudio.blogapp.databinding.FragmentSetupProfileBinding
 import com.circleappsstudio.blogapp.domain.auth.AuthRepositoryImpl
 import com.circleappsstudio.blogapp.presentation.auth.AuthViewModel
 import com.circleappsstudio.blogapp.presentation.auth.AuthViewModelFactory
+import com.circleappsstudio.blogapp.ui.MainActivity
 
 class SetupProfileFragment : Fragment(R.layout.fragment_setup_profile) {
 
@@ -129,7 +130,7 @@ class SetupProfileFragment : Fragment(R.layout.fragment_setup_profile) {
 
                     is Result.Success -> {
 
-                        findNavController().navigate(R.id.action_setupProfileFragment_to_homeScreenFragment)
+                        goToHomeScreen()
 
                         binding.progressBar.hide()
 
@@ -151,6 +152,12 @@ class SetupProfileFragment : Fragment(R.layout.fragment_setup_profile) {
 
             })
 
+    }
+
+    private fun goToHomeScreen() {
+        val intent = Intent(requireContext(), MainActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+        startActivity(intent)
     }
 
 }

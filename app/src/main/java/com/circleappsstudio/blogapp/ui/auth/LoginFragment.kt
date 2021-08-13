@@ -1,5 +1,6 @@
 package com.circleappsstudio.blogapp.ui.auth
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -16,6 +17,7 @@ import com.circleappsstudio.blogapp.databinding.FragmentLoginBinding
 import com.circleappsstudio.blogapp.domain.auth.AuthRepositoryImpl
 import com.circleappsstudio.blogapp.presentation.auth.AuthViewModel
 import com.circleappsstudio.blogapp.presentation.auth.AuthViewModelFactory
+import com.circleappsstudio.blogapp.ui.MainActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 
@@ -138,7 +140,9 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     }
 
     private fun goToHomeScreen() {
-        findNavController().navigate(R.id.action_loginFragment_to_homeScreenFragment)
+        val intent = Intent(requireContext(), MainActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+        startActivity(intent)
     }
 
     private fun goToSetupProfile() {
