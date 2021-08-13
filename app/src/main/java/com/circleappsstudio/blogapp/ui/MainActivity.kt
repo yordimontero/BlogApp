@@ -9,6 +9,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.circleappsstudio.blogapp.R
 import com.circleappsstudio.blogapp.core.hide
 import com.circleappsstudio.blogapp.core.show
+import com.circleappsstudio.blogapp.core.toast
 import com.circleappsstudio.blogapp.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {

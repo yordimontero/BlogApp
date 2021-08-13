@@ -98,6 +98,12 @@ class SetupProfileFragment : Fragment(R.layout.fragment_setup_profile) {
     private fun checkData(bitmap: Bitmap?, userName: String) {
 
         if (bitmap == null) {
+
+            requireContext().toast(
+                requireContext(),
+                "Add your profile picture!"
+            )
+
             return
         }
 
@@ -124,6 +130,7 @@ class SetupProfileFragment : Fragment(R.layout.fragment_setup_profile) {
                     is Result.Success -> {
 
                         findNavController().navigate(R.id.action_setupProfileFragment_to_homeScreenFragment)
+
                         binding.progressBar.hide()
 
                     }
@@ -143,7 +150,6 @@ class SetupProfileFragment : Fragment(R.layout.fragment_setup_profile) {
                 }
 
             })
-
 
     }
 

@@ -16,10 +16,16 @@ import com.circleappsstudio.blogapp.databinding.FragmentRegisterBinding
 import com.circleappsstudio.blogapp.domain.auth.AuthRepositoryImpl
 import com.circleappsstudio.blogapp.presentation.auth.AuthViewModel
 import com.circleappsstudio.blogapp.presentation.auth.AuthViewModelFactory
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 
 class RegisterFragment : Fragment(R.layout.fragment_register) {
 
     private lateinit var binding: FragmentRegisterBinding
+
+    private val firebaseAuth by lazy {
+        FirebaseAuth.getInstance()
+    }
 
     private val viewModel by viewModels<AuthViewModel> {
 
@@ -37,6 +43,8 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
         binding = FragmentRegisterBinding.bind(view)
 
         signUp()
+
+        isUserLoggedIn()
 
     }
 
@@ -71,7 +79,7 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                     }
 
                     is Result.Success -> {
-                        findNavController().navigate(R.id.action_registerFragment_to_setupProfileFragment)
+                        goToSetupProfile()
                         binding.progressBar.visibility = View.GONE
                     }
 
@@ -133,5 +141,22 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
         return false
 
     }
+
+    private fun isUserLoggedIn() {
+        firebaseAuth.currentUser?.let { user ->
+            validateUserProfile(user)
+        }
+    }
+
+    private fun validateUserProfile(user: FirebaseUser?) {
+        if (user?.displayName.toString().isEmpty() || user?.photoUrl == null) {
+            goToSetupProfile()
+        }
+    }
+
+    private fun goToSetupProfile() {
+        findNavController().navigate(R.id.action_registerFragment_to_setupProfileFragment)
+    }
+
 
 }

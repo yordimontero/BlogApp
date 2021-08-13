@@ -17,6 +17,7 @@ import com.circleappsstudio.blogapp.domain.auth.AuthRepositoryImpl
 import com.circleappsstudio.blogapp.presentation.auth.AuthViewModel
 import com.circleappsstudio.blogapp.presentation.auth.AuthViewModelFactory
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 
 class LoginFragment : Fragment(R.layout.fragment_login) {
 
@@ -48,8 +49,8 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     }
 
     private fun isUserLoggedIn() {
-        firebaseAuth.currentUser?.let {
-            goToHomeScreen()
+        firebaseAuth.currentUser?.let { user ->
+            validateUserProfile(user)
         }
     }
 
@@ -104,7 +105,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                     }
 
                     is Result.Success -> {
-                        goToHomeScreen()
+                        validateUserProfile(resultEmitted.data)
                         binding.progressBar.visibility = View.GONE
                     }
 
@@ -126,8 +127,22 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
     }
 
+    private fun validateUserProfile(user: FirebaseUser?) {
+
+        if (user?.displayName.isNullOrEmpty() || user?.photoUrl == null) {
+            goToSetupProfile()
+        } else {
+            goToHomeScreen()
+        }
+
+    }
+
     private fun goToHomeScreen() {
         findNavController().navigate(R.id.action_loginFragment_to_homeScreenFragment)
+    }
+
+    private fun goToSetupProfile() {
+        findNavController().navigate(R.id.action_loginFragment_to_setupProfileFragment)
     }
 
     private fun goToSignUp() {
