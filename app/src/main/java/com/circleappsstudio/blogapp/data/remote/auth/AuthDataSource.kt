@@ -52,10 +52,15 @@ class AuthDataSource {
 
         val user = FirebaseAuth.getInstance().currentUser
 
+        /*val imageRef = FirebaseStorage
+            .getInstance()
+            .reference
+            .child("${user?.uid}/profile_picture")*/
+
         val imageRef = FirebaseStorage
             .getInstance()
             .reference
-            .child("${user?.uid}/profile_picture")
+            .child("users/${user?.uid}/profile_picture/profile_picture")
 
         val baos = ByteArrayOutputStream()
 

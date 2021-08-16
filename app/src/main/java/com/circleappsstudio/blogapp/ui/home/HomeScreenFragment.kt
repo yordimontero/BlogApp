@@ -8,6 +8,8 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.circleappsstudio.blogapp.R
 import com.circleappsstudio.blogapp.core.Result
+import com.circleappsstudio.blogapp.core.hide
+import com.circleappsstudio.blogapp.core.show
 import com.circleappsstudio.blogapp.core.toast
 import com.circleappsstudio.blogapp.data.remote.home.HomeScreenDataSource
 import com.circleappsstudio.blogapp.databinding.FragmentHomeScreenBinding
@@ -49,10 +51,21 @@ class HomeScreenFragment : Fragment(R.layout.fragment_home_screen) {
                         }
 
                         is Result.Success -> {
+
+                            if (resultEmitted.data.isEmpty()) {
+                                binding.progressBar.visibility = View.GONE
+                                binding.emptyContainer.show()
+                                return@Observer
+                            } else {
+                                binding.emptyContainer.hide()
+                            }
+
                             binding.rvHome.adapter = HomeScreenAdapter(
                                 resultEmitted.data
                             )
+
                             binding.progressBar.visibility = View.GONE
+
                         }
 
                         is Result.Failure -> {
