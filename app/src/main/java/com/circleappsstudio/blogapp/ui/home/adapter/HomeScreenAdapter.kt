@@ -82,7 +82,10 @@ class HomeScreenAdapter(
 
             binding.postTimestamp.text = createdAt
 
-            Glide.with(context).load(item.post_image).centerCrop().into(binding.postImage)
+            Glide.with(context)
+                .load(item.post_image)
+                .centerCrop()
+                .into(binding.postImage)
 
         }
 

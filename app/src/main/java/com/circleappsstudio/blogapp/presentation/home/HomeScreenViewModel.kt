@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.circleappsstudio.blogapp.core.Result
 import com.circleappsstudio.blogapp.domain.home.HomeScreenRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
 import java.lang.Exception
 
 class HomeScreenViewModel(
@@ -19,10 +20,24 @@ class HomeScreenViewModel(
 
         emit(Result.Loading())
 
-        try {
-            emit(Result.Success(repository.getLatestPosts()))
-        } catch (e: Exception) {
-            emit(Result.Failure(e))
+        kotlin.runCatching {
+
+            repository.getLatestPosts()
+
+        }.onSuccess { flowList ->
+
+            flowList.collect { listPost ->
+                emit(Result.Success(listPost))
+            }
+
+        }.onFailure { e ->
+            emit(
+                Result.Failure(
+                    Exception(
+                        e.message
+                    )
+                )
+            )
         }
 
     }
@@ -31,9 +46,9 @@ class HomeScreenViewModel(
 
 class HomeScreenViewModelFactory(
     private val repository: HomeScreenRepository
-): ViewModelProvider.Factory {
+) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel?> create(modelClass: Class<T>)
-    : T = HomeScreenViewModel(repository) as T
+            : T = HomeScreenViewModel(repository) as T
 
 }
