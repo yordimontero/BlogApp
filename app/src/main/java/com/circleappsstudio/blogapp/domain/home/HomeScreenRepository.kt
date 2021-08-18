@@ -6,4 +6,9 @@ import kotlinx.coroutines.flow.Flow
 
 interface HomeScreenRepository {
     suspend fun getLatestPosts(): Flow<List<Post>>
+    suspend fun registerLikeButtonState(
+        postId: String,
+        uid: String,
+        liked: Boolean
+    ): Boolean
 }

@@ -41,7 +41,7 @@ class CameraDataSource {
 
         user?.let { firebaseUser ->
 
-            FirebaseFirestore
+            /*FirebaseFirestore
                 .getInstance()
                 .collection("posts")
                 .add(
@@ -52,6 +52,23 @@ class CameraDataSource {
                         post_description = description,
                         uid = firebaseUser.uid
                     )
+                ).await()*/
+
+            FirebaseFirestore
+                .getInstance()
+                .collection("posts")
+                .document(randomName)
+                .set(
+
+                    Post(
+                        id = randomName,
+                        profile_picture = firebaseUser.photoUrl.toString(),
+                        profile_name = firebaseUser.displayName.toString(),
+                        post_image = downloadURL,
+                        post_description = description,
+                        uid = firebaseUser.uid
+                    )
+
                 ).await()
 
         }

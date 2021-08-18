@@ -1,9 +1,7 @@
 package com.circleappsstudio.blogapp.data.remote.home
 
 import com.circleappsstudio.blogapp.data.model.Post
-import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -47,6 +45,9 @@ class HomeScreenDataSource {
                                 "created_at",
                                 DocumentSnapshot.ServerTimestampBehavior.ESTIMATE
                             )?.toDate()
+
+                            id = post.id
+
                         }
 
                         postList.add(firebasePost)
@@ -67,6 +68,31 @@ class HomeScreenDataSource {
             subscription?.remove()
         }
 
+    }
+
+    // Likes Testing:
+    suspend fun registerLikeButtonState(postId: String, uid: String, liked: Boolean): Boolean {
+
+        val increment = FieldValue.increment(1)
+        val decrement = FieldValue.increment(-1)
+
+        val postRef = FirebaseFirestore.getInstance().collection("posts").document(postId)
+        val postsLikesRef =
+            FirebaseFirestore.getInstance().collection("posts_likes").document(postId)
+
+        val batch = FirebaseFirestore.getInstance().batch()
+
+        if (liked) {
+            batch.set(postRef, hashMapOf("likes" to increment), SetOptions.merge())
+            batch.set(postsLikesRef, hashMapOf(uid to true), SetOptions.merge())
+        } else {
+            batch.set(postRef, hashMapOf("likes" to decrement), SetOptions.merge())
+            batch.delete(postsLikesRef)
+        }
+
+        batch.commit().await()
+
+        return liked
     }
 
 }

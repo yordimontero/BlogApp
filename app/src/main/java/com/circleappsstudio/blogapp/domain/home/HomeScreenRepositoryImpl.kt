@@ -18,4 +18,12 @@ class HomeScreenRepositoryImpl(
         dataSource.getLatestPosts()
     }
 
+    override suspend fun registerLikeButtonState(
+        postId: String,
+        uid: String,
+        liked: Boolean
+    ): Boolean = withContext(Dispatchers.IO) {
+        dataSource.registerLikeButtonState(postId, uid, liked)
+    }
+
 }

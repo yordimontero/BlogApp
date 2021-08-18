@@ -3,17 +3,33 @@ package com.circleappsstudio.blogapp.ui.home.adapter
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.circleappsstudio.blogapp.R
 import com.circleappsstudio.blogapp.core.BaseViewHolder
 import com.circleappsstudio.blogapp.core.TimeUtils
 import com.circleappsstudio.blogapp.core.hide
 import com.circleappsstudio.blogapp.data.model.Post
 import com.circleappsstudio.blogapp.databinding.PostItemViewBinding
+import com.google.firebase.auth.FirebaseAuth
 
 class HomeScreenAdapter(
-    private val listPost: List<Post>
+    private val onPostClickListener: onPostClickListener
 ) : RecyclerView.Adapter<BaseViewHolder<*>>() {
+
+    private var postClickListener: onPostClickListener? = null
+    private var liked = false
+    private var postList: List<Post> = emptyList()
+
+    init {
+        postClickListener = onPostClickListener
+    }
+
+    fun setPostData(postList: List<Post>) {
+        this.postList = postList
+        notifyDataSetChanged()
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<*> {
 
@@ -38,13 +54,13 @@ class HomeScreenAdapter(
                 /**
                 Each position for the list of posts will be binded with data.
                  */
-                holder.bind(listPost[position])
+                holder.bind(postList[position])
             }
         }
 
     }
 
-    override fun getItemCount(): Int = listPost.size
+    override fun getItemCount(): Int = postList.size
 
     /**
     HomeScreenViewHolder() extends from BaseViewHolder<> that
@@ -87,8 +103,34 @@ class HomeScreenAdapter(
                 .centerCrop()
                 .into(binding.postImage)
 
+            if(!liked) {
+                binding.btnLike.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_unfavorite))
+            } else {
+                binding.btnLike.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_favorite))
+                binding.btnLike.setColorFilter(ContextCompat.getColor(context, R.color.red))
+            }
+
+            binding.btnLike.setOnClickListener {
+
+                liked = !liked
+
+                if(!liked) {
+                    binding.btnLike.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_unfavorite))
+                } else {
+                    binding.btnLike.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_favorite))
+                    binding.btnLike.setColorFilter(ContextCompat.getColor(context, R.color.red))
+                }
+
+                postClickListener?.onLikeButtonClick(item, liked)
+
+            }
+
         }
 
     }
 
+}
+
+interface onPostClickListener {
+    fun onLikeButtonClick(post: Post, liked: Boolean)
 }
