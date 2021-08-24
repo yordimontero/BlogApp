@@ -5,42 +5,68 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import com.circleappsstudio.blogapp.core.Result
+import com.circleappsstudio.blogapp.data.model.Post
 import com.circleappsstudio.blogapp.domain.home.HomeScreenRepository
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 import java.lang.Exception
 
 class HomeScreenViewModel(
     private val repository: HomeScreenRepository
 ) : ViewModel() {
 
-    fun fetchLatestPosts() = liveData(
-        viewModelScope.coroutineContext + Dispatchers.Main
-    ) {
-
-        emit(Result.Loading())
+    val latestPosts: StateFlow<Result<List<Post>>> = flow {
 
         kotlin.runCatching {
 
             repository.getLatestPosts()
 
-        }.onSuccess { flowList ->
+        }.onSuccess { resultPostList ->
 
-            flowList.collect { listPost ->
-                emit(Result.Success(listPost))
-            }
+            emit(Result.Success(resultPostList))
 
-        }.onFailure { e ->
+        }.onFailure { throwable ->
+
             emit(
                 Result.Failure(
                     Exception(
-                        e.message
+                        throwable
                     )
+                )
+            )
+
+        }
+
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = Result.Loading()
+    )
+
+    private val posts = MutableStateFlow<Result<List<Post>>>(Result.Loading())
+
+    fun fetchPosts() = viewModelScope.launch {
+
+        kotlin.runCatching {
+
+            repository.getLatestPosts()
+
+        }.onSuccess { resultPostList ->
+
+            posts.value = Result.Success(resultPostList)
+
+        }.onFailure { throwable ->
+            posts.value = Result.Failure(
+                Exception(
+                    throwable
                 )
             )
         }
 
     }
+
+    fun getPosts(): StateFlow<Result<List<Post>>> = posts
 
     fun registerLikeButtonState(
         postId: String,

@@ -12,9 +12,8 @@ class HomeScreenRepositoryImpl(
     private val dataSource: HomeScreenDataSource
 ) : HomeScreenRepository {
 
-    @ExperimentalCoroutinesApi
     override suspend fun getLatestPosts()
-    : Flow<List<Post>> = withContext(Dispatchers.IO) {
+            : List<Post> = withContext(Dispatchers.IO) {
         dataSource.getLatestPosts()
     }
 

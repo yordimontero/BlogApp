@@ -11,63 +11,32 @@ import java.lang.Exception
 
 class HomeScreenDataSource {
 
-    @ExperimentalCoroutinesApi
-    suspend fun getLatestPosts(): Flow<List<Post>> = callbackFlow {
+    suspend fun getLatestPosts(): List<Post> {
 
         val postList = mutableListOf<Post>()
 
-        var postReference: Query? = null
+        val querySnapshot = FirebaseFirestore
+            .getInstance()
+            .collection("posts")
+            .get()
+            .await()
 
-        try {
+        for (post in querySnapshot.documents) {
+            post.toObject(Post::class.java)?.let { firebasePost ->
 
-            postReference = FirebaseFirestore
-                .getInstance()
-                .collection("posts")
-                .orderBy("created_at", Query.Direction.DESCENDING)
-
-        } catch (e: Throwable) {
-            close(e)
-        }
-
-        val subscription = postReference?.addSnapshotListener { value, error ->
-
-            if (value == null) return@addSnapshotListener
-
-            try {
-
-                postList.clear()
-
-                for (post in value.documents) {
-                    post.toObject(Post::class.java)?.let { firebasePost ->
-
-                        firebasePost.apply {
-                            created_at = post.getTimestamp(
-                                "created_at",
-                                DocumentSnapshot.ServerTimestampBehavior.ESTIMATE
-                            )?.toDate()
-
-                            id = post.id
-
-                        }
-
-                        postList.add(firebasePost)
-
-                    }
-
+                firebasePost.apply {
+                    created_at = post.getTimestamp(
+                        "created_at",
+                        DocumentSnapshot.ServerTimestampBehavior.ESTIMATE
+                    )?.toDate()
                 }
 
-            } catch (e: Exception) {
-                close(e)
+                postList.add(firebasePost)
+
             }
-
-            offer(postList)
-
         }
 
-        awaitClose {
-            subscription?.remove()
-        }
-
+        return postList
     }
 
     // Likes Testing:

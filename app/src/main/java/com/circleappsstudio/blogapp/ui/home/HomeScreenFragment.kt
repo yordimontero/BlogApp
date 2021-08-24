@@ -6,7 +6,10 @@ import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.circleappsstudio.blogapp.R
 import com.circleappsstudio.blogapp.core.Result
 import com.circleappsstudio.blogapp.core.hide
@@ -20,6 +23,8 @@ import com.circleappsstudio.blogapp.presentation.HomeScreenViewModel
 import com.circleappsstudio.blogapp.presentation.HomeScreenViewModelFactory
 import com.circleappsstudio.blogapp.ui.home.adapter.HomeScreenAdapter
 import com.circleappsstudio.blogapp.ui.home.adapter.onPostClickListener
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 class HomeScreenFragment : Fragment(R.layout.fragment_home_screen), onPostClickListener {
 
@@ -43,14 +48,17 @@ class HomeScreenFragment : Fragment(R.layout.fragment_home_screen), onPostClickL
         binding.rvHome.adapter = adapter
 
         getLatestPostObserver()
+        //getLatestPostMutableStateFlow()
 
     }
 
     private fun getLatestPostObserver() {
 
-        viewModel.fetchLatestPosts()
-            .observe(
-                viewLifecycleOwner, Observer { resultEmitted ->
+        viewLifecycleOwner.lifecycleScope.launch {
+
+            viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+
+                viewModel.latestPosts.collect { resultEmitted ->
 
                     when (resultEmitted) {
 
@@ -63,7 +71,7 @@ class HomeScreenFragment : Fragment(R.layout.fragment_home_screen), onPostClickL
                             if (resultEmitted.data.isEmpty()) {
                                 binding.progressBar.visibility = View.GONE
                                 binding.emptyContainer.show()
-                                return@Observer
+                                return@collect
                             } else {
                                 binding.emptyContainer.hide()
                             }
@@ -89,7 +97,63 @@ class HomeScreenFragment : Fragment(R.layout.fragment_home_screen), onPostClickL
 
                 }
 
-            )
+            }
+
+        }
+
+    }
+
+    private fun getLatestPostMutableStateFlow() {
+
+        viewModel.fetchPosts()
+
+        viewLifecycleOwner.lifecycleScope.launch {
+
+            viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+
+                viewModel.getPosts().collect { resultEmitted ->
+
+                    when (resultEmitted) {
+
+                        is Result.Loading -> {
+                            binding.progressBar.visibility = View.VISIBLE
+                        }
+
+                        is Result.Success -> {
+
+                            if (resultEmitted.data.isEmpty()) {
+                                binding.progressBar.visibility = View.GONE
+                                binding.emptyContainer.show()
+                                return@collect
+                            } else {
+                                binding.emptyContainer.hide()
+                            }
+
+                            adapter.setPostData(resultEmitted.data)
+
+                            binding.progressBar.visibility = View.GONE
+
+                        }
+
+                        is Result.Failure -> {
+
+                            requireContext().toast(
+                                requireContext(),
+                                "Something went wrong: ${resultEmitted.exception.message}",
+                                Toast.LENGTH_LONG
+                            )
+
+                            binding.progressBar.visibility = View.GONE
+                        }
+
+                    }
+
+                }
+
+            }
+
+        }
+
 
     }
 
